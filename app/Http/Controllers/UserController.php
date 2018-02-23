@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use App\Http\Requests\UsersRequest;
+use App\users;
 
 class UserController extends Controller
 {
@@ -32,16 +34,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersRequest $request)
     {
+        $user = new users();
+        $user->setAttribute('firstname', $request->input('firstname'));
+        $user->setAttribute('lastname', $request->input('lastname'));
+        $user->setAttribute('gender', $request->input('gender'));
+        $user->setAttribute('newsletter', $request->input('newsletter'));
+        $user->setAttribute('mood', $request->input('mood'));
+        $user->save();
+
         $data = [
-            'user' => [
-                'firstname' => $request->input('firstname'),
-                'lastname' => $request->input('lastname'),
-                'gender' => $request->input('gender'),
-                'newsletter' => $request->input('newsletter'),
-                'mood' => $request->input('mood'),
-            ],
+            'user' => $user
         ];
 
         return view('user.result', $data);
